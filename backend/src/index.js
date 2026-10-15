@@ -56,12 +56,9 @@ app.use(errorHandler);
 // Start Server and Connect Database
 const startServer = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI;
-    if (!mongoUri) {
-      throw new Error("MONGO_URI is missing in .env file");
-    }
-
-    await mongoose.connect(mongoUri);
+    await mongoose.connect(process.env.MONGO_URI, {
+      family: 4, // Xallinta IPv4 connection
+    });
     console.log("Database connected successfully 🟢");
 
     app.listen(PORT, () => {
@@ -69,7 +66,6 @@ const startServer = async () => {
     });
   } catch (error) {
     console.error("Failed to start server 🔴:", error.message);
-    process.exit(1);
   }
 };
 
